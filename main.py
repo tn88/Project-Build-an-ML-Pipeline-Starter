@@ -7,6 +7,7 @@ import wandb
 import hydra
 from omegaconf import DictConfig
 
+
 _steps = [
     "download",
     "basic_cleaning",
@@ -21,7 +22,7 @@ _steps = [
 
 
 # This automatically reads in the configuration
-@hydra.main(config_name='config')
+@hydra.main(config_path='conf', config_name='config')
 def go(config: DictConfig):
 
     # Setup the wandb experiment. All runs will be grouped under this name
@@ -63,9 +64,17 @@ def go(config: DictConfig):
             pass
 
         if "data_split" in active_steps:
-            ##################
-            # Implement here #
-            ##################
+            _ = mlflow.run(
+                f"{config['main']['components_repository']}/train_val_test_split",
+                "main",
+                parameters={
+                    "input": "tamnell88-wgu/Project-Build-an-ML-Pipeline-Starter-src_basic_cleaning/cleaned_data/clean_sample.csv:latest",
+                    "test_size": config["modeling"]["test_size"],
+                    "random_seed": config["modeling"]["random_seed"],
+                    "stratify_by": config["modeling"]["stratify_by"]
+                }
+            )
+        
             pass
 
         if "train_random_forest" in active_steps:
@@ -78,9 +87,16 @@ def go(config: DictConfig):
             # NOTE: use the rf_config we just created as the rf_config parameter for the train_random_forest
             # step
 
-            ##################
-            # Implement here #
-            ##################
+            _ = mlflow.run(
+                os.path.abspath("src", "train_random_forest"),
+                "main",
+                parameters={
+                    "trainval_artifact": "trainval_data.csv:latest",
+                    "output_artifact": "random_forest_export",
+                    "rf_config": rf_config
+                }
+                
+            )
 
             pass
 

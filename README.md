@@ -1,5 +1,5 @@
 W&B public project link: https://wandb.ai/tamnell88-wgu/nyc_airbnb/table?nw=nwusertamnell88
-Git repo link: https://github.com/tn88/Project-Build-an-ML-Pipeline-Starter/tree/master
+https://github.com/tn88/Project-Build-an-ML-Pipeline-Starter
 
 # Build an ML Pipeline for Short-Term Rental Prices in NYC
 You are working for a property management company renting rooms and properties for short periods of 
